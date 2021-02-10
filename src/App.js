@@ -1,25 +1,86 @@
-import logo from './logo.svg';
+import React, { useCallback, useState } from 'react';
+import { useDropzone } from 'react-dropzone';
 import './App.css';
+import handleCsv from './handleCsv';
 
-function App() {
+const App = () => {
+  const [range, setRange] = useState(3);
+  const [limit, setLimit] = useState(38);
+  const [results, setResults] = useState([]);
+
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      const resultsWithMetaPromises = acceptedFiles.map((file) => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onabort = () => reject('File reading was aborted');
+          reader.onerror = () => reject('File reading has failed');
+          reader.onload = () => {
+            handleCsv(reader.result, range, limit).then((targets) => {
+              resolve({ run: file.name, targets, range, limit });
+            });
+          };
+          reader.readAsText(file);
+        });
+      });
+      const resultsWithMetaPromise = Promise.all(resultsWithMetaPromises);
+      resultsWithMetaPromise.then((resultsWithMeta) => setResults([...results, ...resultsWithMeta]));
+    },
+    [range, limit, results]
+  );
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
+  const handleInputChange = (setter) => (event) => setter(event.target.value);
+
+  console.log(results);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h3>Controls</h3>
+      <div className="App-controls">
+        <label className="App-input-container">
+          <span>Range</span>
+          <input step="0.1" type="number" value={range} onChange={handleInputChange(setRange)} />
+        </label>
+        <label className="App-input-container">
+          <span>Limit</span>
+          <input step="0.1" type="number" value={limit} onChange={handleInputChange(setLimit)} />
+        </label>
+      </div>
+      <div className="App-dropzone" {...getRootProps()}>
+        <input {...getInputProps()} />
+        {isDragActive ? <p>Drop the files here ...</p> : <p>Drag 'n' drop some files here, or click to select files</p>}
+      </div>
+      <h3>Results</h3>
+      <div className="App-results">
+        {results.map((result) => (
+          <div className="App-result" key={result.run + result.range + result.limit}>
+            <h4>{result.run}</h4>
+            <h5>
+              Range: {result.range}, limit: {result.limit}
+            </h5>
+            <table>
+              <thead>
+                <tr>
+                  <th>Sample ID</th>
+                  <th>Position</th>
+                </tr>
+              </thead>
+              <tbody>
+                {result.targets.map((target) => (
+                  <tr key={target.HEX.Sample + target.HEX.Well}>
+                    <td>{target.HEX.Sample}</td>
+                    <td>{target.HEX.Well}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ))}
+      </div>
     </div>
   );
-}
+};
 
 export default App;

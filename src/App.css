@@ -1,38 +1,86 @@
 .App {
+  font-size: 18px;
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  width: 100%;
+  /* min-height: 50vh; */
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  flex-direction: column;
+  border: 1px solid transparent;
 }
 
-.App-link {
-  color: #61dafb;
+.App > * {
+  margin: 1rem 0;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.App-controls {
+  display: flex;
+  justify-content: space-between;
+}
+
+.App-controls > * {
+  margin: 0 1rem;
+}
+
+.App-dropzone {
+  background-color: lightblue;
+  padding: 4rem 6rem;
+  border-radius: 10px;
+}
+
+.App-input-container {
+  display: flex;
+  align-items: center;
+}
+
+.App-input-container > input {
+  font-size: 16px;
+  margin-left: 1rem;
+}
+
+.App-results {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.App-result table {
+  width: 100%;
+}
+
+.App-result thead {
+  position: relative;
+}
+
+.App-result thead::after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: block;
+  content: '';
+  height: 2px;
+  background-color: black;
+}
+
+.App-result tbody tr {
+  position: relative;
+}
+
+.App-result tbody tr::after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: block;
+  content: '';
+  height: 1px;
+  background-color: lightgray;
+}
+
+.App-result td,
+.App-result,
+th {
+  padding: 1rem;
 }
