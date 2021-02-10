@@ -50,7 +50,11 @@ const App = () => {
       </div>
       <div className="App-dropzone" {...getRootProps()}>
         <input {...getInputProps()} />
-        {isDragActive ? <p>Drop the files here ...</p> : <p>Drag 'n' drop some files here, or click to select files</p>}
+        {isDragActive ? (
+          <p>Drop the files here ...</p>
+        ) : (
+          <p>Drag 'n' drop some CSV files here, or click to select files</p>
+        )}
       </div>
       <h3>Results</h3>
       <div className="App-results">
