@@ -1,7 +1,17 @@
 import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { equals, last, pipe, prop, split, toLower } from 'ramda';
 import './App.css';
 import handleCsv from './handleCsv';
+
+// prettier-ignore
+const fileIsCsv = pipe(
+  prop('name'),
+  split('.'),
+  last,
+  toLower,
+  equals('csv')
+);
 
 const App = () => {
   const [range, setRange] = useState(3);
@@ -10,7 +20,8 @@ const App = () => {
 
   const onDrop = useCallback(
     (acceptedFiles) => {
-      const resultsWithMetaPromises = acceptedFiles.map((file) => {
+      console.log({ acceptedFiles });
+      const resultsWithMetaPromises = acceptedFiles.filter(fileIsCsv).map((file) => {
         return new Promise((resolve, reject) => {
           const reader = new FileReader();
           reader.onabort = () => reject('File reading was aborted');
@@ -60,8 +71,9 @@ const App = () => {
         {results.map((result, index) => (
           <div className="App-result" key={result.run + result.range + result.limit}>
             <p>
-              <i>#{index + 1}</i> <h3>{result.run}</h3>
+              <i>#{index + 1}</i>
             </p>
+            <h3>{result.run}</h3>
             <h4>
               Range: {result.range}, limit: {result.limit}
             </h4>
