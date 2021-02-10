@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { equals, last, pipe, prop, split, toLower } from 'ramda';
+import { equals, last, pipe, prop, reverse, split, toLower } from 'ramda';
 import './App.css';
 import handleCsv from './handleCsv';
 
@@ -68,10 +68,10 @@ const App = () => {
       </div>
       <h2>Results</h2>
       <div className="App-results">
-        {results.map((result, index) => (
+        {reverse(results).map((result, index) => (
           <div className="App-result" key={result.run + result.range + result.limit}>
             <p>
-              <i>#{index + 1}</i>
+              <i>#{results.length - index}</i>
             </p>
             <h3>{result.run}</h3>
             <h4>
