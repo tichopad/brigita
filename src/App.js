@@ -33,11 +33,10 @@ const App = () => {
 
   const handleInputChange = (setter) => (event) => setter(event.target.value);
 
-  console.log(results);
-
   return (
     <div className="App">
-      <h3>Controls</h3>
+      <h1>Brigita</h1>
+      <h2>Controls</h2>
       <div className="App-controls">
         <label className="App-input-container">
           <span>Range</span>
@@ -56,26 +55,34 @@ const App = () => {
           <p>Drag 'n' drop some CSV files here, or click to select files</p>
         )}
       </div>
-      <h3>Results</h3>
+      <h2>Results</h2>
       <div className="App-results">
-        {results.map((result) => (
+        {results.map((result, index) => (
           <div className="App-result" key={result.run + result.range + result.limit}>
-            <h4>{result.run}</h4>
-            <h5>
+            <p>
+              <i>#{index + 1}</i> <h3>{result.run}</h3>
+            </p>
+            <h4>
               Range: {result.range}, limit: {result.limit}
-            </h5>
+            </h4>
             <table>
               <thead>
                 <tr>
-                  <th>Sample ID</th>
+                  <th>Sample</th>
                   <th>Position</th>
+                  <th>Cq (FAM)</th>
+                  <th>Cq (HEX)</th>
                 </tr>
               </thead>
               <tbody>
                 {result.targets.map((target) => (
                   <tr key={target.HEX.Sample + target.HEX.Well}>
                     <td>{target.HEX.Sample}</td>
-                    <td>{target.HEX.Well}</td>
+                    <td>
+                      <strong>{target.HEX.Well}</strong>
+                    </td>
+                    <td>{target.FAM.Cq}</td>
+                    <td>{target.HEX.Cq}</td>
                   </tr>
                 ))}
               </tbody>
