@@ -93,8 +93,8 @@ const App = () => {
                     <td>
                       <strong>{target.HEX.Well}</strong>
                     </td>
-                    <td>{target.FAM.Cq}</td>
-                    <td>{target.HEX.Cq}</td>
+                    <td>{parseFloat(target.FAM.Cq).toFixed(3)}</td>
+                    <td>{parseFloat(target.HEX.Cq).toFixed(3)}</td>
                   </tr>
                 ))}
               </tbody>
