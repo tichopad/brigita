@@ -16,7 +16,11 @@ const findTargets = (range, limit) => {
 const parseCsv = (csvString) => {
   let rows = [];
 
-  const parseStream = csv.parseString(csvString, { headers: true });
+  const parseStream = csv.parseString(csvString, {
+    delimiter: ';',
+    discardUnmappedColumns: true,
+    headers: true
+  });
 
   return new Promise((resolve, reject) => {
     parseStream
